@@ -20,6 +20,7 @@
 		337F35DB26184E0400DDDBB1 /* MainTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 337F35DA26184E0400DDDBB1 /* MainTabController.swift */; };
 		33C51D25262189E80005423F /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C51D24262189E80005423F /* LoginController.swift */; };
 		33C51D28262189F60005423F /* RegisterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C51D27262189F60005423F /* RegisterController.swift */; };
+		33C51D2B26219B900005423F /* Untilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C51D2A26219B900005423F /* Untilities.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		337F35DA26184E0400DDDBB1 /* MainTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabController.swift; sourceTree = "<group>"; };
 		33C51D24262189E80005423F /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		33C51D27262189F60005423F /* RegisterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterController.swift; sourceTree = "<group>"; };
+		33C51D2A26219B900005423F /* Untilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Untilities.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +91,7 @@
 			isa = PBXGroup;
 			children = (
 				3356393B261B716A001503A9 /* Extensions.swift */,
+				33C51D2A26219B900005423F /* Untilities.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -208,6 +211,7 @@
 			files = (
 				33C51D28262189F60005423F /* RegisterController.swift in Sources */,
 				336DE6052619ACD50042B0A8 /* NotificationsController.swift in Sources */,
+				33C51D2B26219B900005423F /* Untilities.swift in Sources */,
 				336DE6082619AD0A0042B0A8 /* ConversationsController.swift in Sources */,
 				337F35BF26184CC400DDDBB1 /* AppDelegate.swift in Sources */,
 				3356393C261B716B001503A9 /* Extensions.swift in Sources */,
