@@ -10,6 +10,10 @@ import UIKit
 class UserCell: UITableViewCell {
     //MARK: - Properties
     
+    var user:User? {
+        didSet{configureUI()}
+    }
+    
     private lazy var profileImageView: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
@@ -52,5 +56,16 @@ class UserCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    //MARK: - Helpers
+    func configureUI() {
+        guard let user = user else {
+            return
+        }
+        profileImageView.sd_setImage(with: user.profileImageUrl)
+        
+        usernameLabel.text = user.username
+        fullnameLabel.text = user.fullname
     }
 }
