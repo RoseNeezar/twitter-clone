@@ -94,7 +94,7 @@ class TweetCell: UICollectionViewCell {
         profileImageView.anchor(top: topAnchor, left: leftAnchor, paddingTop: 8, paddingLeft: 8)
         
         infoLabel.font = UIFont.systemFont(ofSize: 14)
-        
+        infoLabel.text = "Eddie underwood @wiseguy"
         let stack = UIStackView(arrangedSubviews: [infoLabel,captionLabel])
       
         stack.axis = .vertical
