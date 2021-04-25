@@ -10,7 +10,7 @@ import Firebase
 struct TweetService {
     static let shared = TweetService()
     
-    func uploadTweet(caption: String, completion: @escaping(Error?, DatabaseReference) -> Void) {
+    func uploadTweet(caption: String,type: UploadTweetConfiguration ,completion: @escaping(DatabaseCompletion)) {
         guard let uid = Auth.auth().currentUser?.uid else {
             return
         }
@@ -21,11 +21,18 @@ struct TweetService {
             "likes": 0,
             "retweets": 0,
             "caption": caption ] as [String : Any]
-        let ref = REF_TWEETS.childByAutoId()
-        
-        ref.updateChildValues(values) { (err, ref) in
+       
+        switch type {
+        case .tweet:
+            
+            REF_TWEETS.childByAutoId().updateChildValues(values) { (err, ref) in
             guard let tweetID = ref.key else {return}
             REF_USER_TWEETS.child(uid).updateChildValues([tweetID : 1], withCompletionBlock: completion)
+            }
+            
+        case .reply(let tweet):
+            
+            REF_TWEET_REPLIES.child(tweet.tweetID).childByAutoId().updateChildValues(values,withCompletionBlock: completion)
         }
     }
     
@@ -62,5 +69,20 @@ struct TweetService {
             print("DEBUG: Error \(err)")
         }
 
+    }
+    
+    func fetchReplies(forTweet tweet: Tweet, completion: @escaping([Tweet]) -> Void) {
+        var tweets = [Tweet]()
+        
+        REF_TWEET_REPLIES.child(tweet.tweetID).observe(.childAdded) { (result) in
+            guard let dictionary = result.value as? [String: AnyObject] else {return}
+            guard let uid = dictionary["uid"] as? String else {return}
+            let tweetID = result.key
+            UserService.shared.fetchUser(uid: uid) { (user) in
+                let tweet = Tweet(user: user,tweetID: tweetID, dictionary: dictionary)
+                tweets.append(tweet)
+                completion(tweets)
+            }
+        }
     }
 }
