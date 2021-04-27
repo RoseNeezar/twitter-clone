@@ -100,6 +100,19 @@ extension TweetController: UICollectionViewDelegateFlowLayout {
 // MARK: - TweetHeaderDelegate
 
 extension TweetController: TweetHeaderDelegate {
+    func handleLikeTapped(_ tweetHeader: TweetHeader) {
+        guard let tweet = tweetHeader.tweet else {
+            return
+        }
+        TweetService.shared.likeTweet(tweet: tweet) { (err, ref) in
+            tweetHeader.tweet?.didLike.toggle()
+            let likes = tweet.didLike ? tweet.likes - 1 : tweet.likes + 1
+            tweetHeader.tweet?.likes = likes
+        }
+    }
+    
+
+    
     func showActionSheet() {
         if tweet.user.isCurrentUser {
             showActionSheet(forUser: tweet.user)

@@ -9,6 +9,7 @@ import UIKit
 
 protocol TweetHeaderDelegate: class {
     func showActionSheet()
+    func handleLikeTapped(_ tweetHeader: TweetHeader)
 }
 
 class TweetHeader: UICollectionReusableView {
@@ -224,7 +225,7 @@ class TweetHeader: UICollectionReusableView {
     }
     
     @objc func handleLikeTapped() {
-        
+        delegate?.handleLikeTapped(self)
     }
     
     @objc func handleShareTapped() {
