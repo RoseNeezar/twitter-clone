@@ -129,14 +129,14 @@ class TweetHeader: UICollectionReusableView {
         return button
     }()
     
-//    private let replyLabel: ActiveLabel = {
-//        let label = ActiveLabel()
-//        label.textColor = .lightGray
-//        label.font = UIFont.systemFont(ofSize: 12)
+    private let replyLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .lightGray
+        label.font = UIFont.systemFont(ofSize: 12)
 //        label.mentionColor = .twitterBlue
-//        return label
-//    }()
-//
+        return label
+    }()
+
     // MARK: - Lifecycle
     
     override init(frame: CGRect) {
@@ -146,9 +146,14 @@ class TweetHeader: UICollectionReusableView {
         labelStack.axis = .vertical
         labelStack.spacing = -6
         
-        let stack = UIStackView(arrangedSubviews: [profileImageView,labelStack])
-        stack.axis = .horizontal
-        stack.spacing = 12
+        let imageCaptionStack = UIStackView(arrangedSubviews: [profileImageView,labelStack])
+        imageCaptionStack.axis = .horizontal
+        imageCaptionStack.spacing = 12
+        
+        let stack = UIStackView(arrangedSubviews: [replyLabel,imageCaptionStack])
+        stack.axis = .vertical
+        stack.spacing = 8
+        stack.distribution = .fillProportionally
         
         addSubview(stack)
         stack.anchor(top: topAnchor, left: leftAnchor, paddingTop: 16, paddingLeft: 16)
@@ -203,6 +208,9 @@ class TweetHeader: UICollectionReusableView {
         likesLabel.attributedText = viewModel.likesAttributedString
         likeButton.setImage(viewModel.likeButtonImage, for: .normal)
         likeButton.tintColor = viewModel.likeButtonTintColor
+        
+        replyLabel.isHidden = viewModel.shouldHideReplyLabel
+        replyLabel.text = viewModel.replyText
     }
     
     

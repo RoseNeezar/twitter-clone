@@ -10,6 +10,7 @@ import UIKit
 protocol ProfileHeaderDelegate:class {
     func handleDismissal()
     func handleEditProfileFollow (_ header: ProfileHeader)
+    func didSelect(filter: ProfileFilterOptons)
 }
 
 class ProfileHeader: UICollectionReusableView {
@@ -92,11 +93,7 @@ class ProfileHeader: UICollectionReusableView {
         return label
     }()
     
-    private let underlineView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .twitterBlue
-        return view
-    }()
+    
     
      lazy var editProfileFollowButton: UIButton = {
         let button = UIButton(type: .system)
@@ -150,9 +147,7 @@ class ProfileHeader: UICollectionReusableView {
         addSubview(filterBar)
         filterBar.anchor(left: leftAnchor,bottom: bottomAnchor, right: rightAnchor,height: 50)
         
-        let count = CGFloat(ProfileFilterOptons.allCases.count)
-        addSubview(underlineView)
-        underlineView.anchor(left: leftAnchor, bottom: bottomAnchor, width: frame.width / count, height: 2)
+       
     }
     
     required init?(coder: NSCoder) {
@@ -196,13 +191,10 @@ class ProfileHeader: UICollectionReusableView {
 
 //MARK: - ProfileFilterViewDelegate
 extension ProfileHeader: ProfileFilterViewDelegate {
-    func filterView(_ view: ProfileFilterView, didSelect indexPath: IndexPath) {
-        guard let cell = view.collectionView.cellForItem(at: indexPath) else {
+    func filterView(_ view: ProfileFilterView, didSelect index: Int) {
+        guard let filter = ProfileFilterOptons(rawValue: index) else {
             return
         }
-        let xPosition = cell.frame.origin.x
-        UIView.animate(withDuration: 0.3) {
-            self.underlineView.frame.origin.x = xPosition
-        }
+        delegate?.didSelect(filter: filter)
     }
 }
