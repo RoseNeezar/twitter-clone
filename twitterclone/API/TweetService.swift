@@ -41,31 +41,40 @@ struct TweetService {
     
     func fetchTweets(completion: @escaping([Tweet]) -> Void)  {
         var tweets = [Tweet]()
+        guard let currentUid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        REF_USER_FOLLOWING.child(currentUid).observe(.childAdded) { (snapshot) in
+            let followingUid = snapshot.key
+            
+            REF_USER_TWEETS.child(followingUid).observe(.childAdded) { (snap) in
+                let tweetID = snap.key
+                self.fetchTweet(withTweetID: tweetID) { (tweet) in
+                    tweets.append(tweet)
+                    completion(tweets)
+                }
+            }
+        }
         
-        REF_TWEETS.observe(.childAdded) { (result) in
-            guard let dictionary = result.value as? [String: AnyObject] else {return}
-            guard let uid = dictionary["uid"] as? String else {return}
-            let tweetID = result.key
-            UserService.shared.fetchUser(uid: uid) { (user) in
-                let tweet = Tweet(user: user,tweetID: tweetID, dictionary: dictionary)
+        REF_USER_TWEETS.child(currentUid).observe(.childAdded) { (snapshot) in
+            let tweetID = snapshot.key
+            
+            self.fetchTweet(withTweetID: tweetID) { (tweet) in
                 tweets.append(tweet)
                 completion(tweets)
             }
-          
         }
     }
     
     func fetchTweets(forUser user:User, completion: @escaping([Tweet])->Void) {
         var tweets = [Tweet]()
-        REF_USER_TWEETS.child(user.uid).observe(.childAdded) { (result) in
-            let tweetID = result.key
-            self.fetchTweet(withTweetID: tweetID) { (tweet) in
+        REF_USER_TWEETS.child(user.uid).observe(.childAdded) { snapshot in
+            let tweetID = snapshot.key
+            
+            self.fetchTweet(withTweetID: tweetID) { tweet in
                 tweets.append(tweet)
                 completion(tweets)
             }
-          
-        } withCancel: { (err) in
-            print("DEBUG: Error \(err)")
         }
     }
     
@@ -80,7 +89,7 @@ struct TweetService {
         }
     }
     
-    func fetchReplise(forUser user: User, completion: @escaping([Tweet]) -> Void) {
+    func fetchUserReplies(forUser user: User, completion: @escaping([Tweet]) -> Void) {
         var replies = [Tweet]()
         
         REF_USER_REPLIES.child(user.uid).observe(.childAdded) { (result) in

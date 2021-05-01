@@ -75,7 +75,7 @@ class ProfileController: UICollectionViewController {
     }
     
     func fetchReplies() {
-        TweetService.shared.fetchReplise(forUser: user) { (tweets) in
+        TweetService.shared.fetchUserReplies(forUser: user) { (tweets) in
             self.replies = tweets
         }
     }
