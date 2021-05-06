@@ -16,6 +16,7 @@ class EditProfileController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavigationBar()
+        configureTableView()
     }
     
     init(user: User) {
@@ -59,6 +60,14 @@ class EditProfileController: UITableViewController {
         tableView.tableHeaderView = headerView
         headerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 180)
         tableView.tableFooterView = UIView()
+        
+        headerView.delegate = self
     }
     
+}
+
+extension EditProfileController:EditProfileHeaderDelegate {
+    func didTapChangeProfilePhoto() {
+        print("DEBUG: Edit profile header")
+    }
 }
