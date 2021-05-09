@@ -38,7 +38,6 @@ class MainTabController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//        logUserOut()
         view.backgroundColor = .twitterBlue
         authenticateUserAndConfigureUI()
     }
@@ -68,14 +67,7 @@ class MainTabController: UITabBarController {
         }
     }
     
-    func logUserOut()  {
-        do {
-            try Auth.auth().signOut()
-        } catch let error {
-            print("DEBUG: error \(error)")
-        }
-    }
-    
+  
     //MARK: - Selectors
     @objc func actonButtonTapped(){
         guard let user = user else {
