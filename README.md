@@ -6,6 +6,7 @@ A project to learn swift and UIkit. The UI is made programmatically
 
  - Xcode 12
  - Swift 5
+ - Firebase
  
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
