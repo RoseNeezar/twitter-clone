@@ -41,8 +41,13 @@ class FeedController: UICollectionViewController {
     
     //MARK: - API
     func fetchTweets()  {
+       
         collectionView.refreshControl?.beginRefreshing()
         TweetService.shared.fetchTweets { (tweets) in
+            if tweets.isEmpty {
+                print("DEBUG: EMPTYYYYYYYYYYY \(tweets)")
+              self.collectionView.refreshControl?.endRefreshing()
+            }
             self.tweets = tweets.sorted(by: {$0.timestamp > $1.timestamp})
             self.checkIfUserLikedTweets()
             

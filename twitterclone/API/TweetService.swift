@@ -45,12 +45,23 @@ struct TweetService {
             return
         }
         
-        
+        REF_USER_FOLLOWING.child(currentUid).observeSingleEvent(of: .value) { (snap) in
+            if !snap.exists() {
+                completion(tweets)
+            }
+            REF_USER_TWEETS.observeSingleEvent(of: .value) { (snapshot) in
+                if !snapshot.exists() {
+                    completion(tweets)
+                }
+            }
+        }
         
         REF_USER_FOLLOWING.child(currentUid).observe(.childAdded) { (snapshot) in
+
             let followingUid = snapshot.key
             
             REF_USER_TWEETS.child(followingUid).observe(.childAdded) { (snap) in
+
                 let tweetID = snap.key
                 self.fetchTweet(withTweetID: tweetID) { (tweet) in
                     tweets.append(tweet)
