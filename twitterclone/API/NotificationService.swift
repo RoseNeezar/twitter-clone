@@ -25,13 +25,10 @@ struct NotificationService {
         REF_NOTIFICATIONS.child(user.uid).childByAutoId().updateChildValues(values)
     }
     
-    func fetchNotifications(completion: @escaping([Notification]) -> Void) {
-        var notifications = [Notification]()
-        guard let uid = Auth.auth().currentUser?.uid else {
-            return
-        }
+    fileprivate func getNotifications(uid: String, completion: @escaping([Notification]) -> Void) {
+         var notifications = [Notification]()
         
-        REF_NOTIFICATIONS.child(uid).observe(.childAdded) { (result) in
+         REF_NOTIFICATIONS.child(uid).observe(.childAdded) { (result) in
             guard let dictionary = result.value as? [String: AnyObject] else {return}
             guard let uid = dictionary["uid"] as? String else {return}
             
@@ -39,6 +36,21 @@ struct NotificationService {
                 let notification = Notification(user: user, dictionary: dictionary)
                 notifications.append(notification)
                 completion(notifications)
+            }
+        }
+    }
+    
+    func fetchNotifications(completion: @escaping([Notification]) -> Void) {
+        let notifications = [Notification]()
+        guard let uid = Auth.auth().currentUser?.uid else {
+            return
+        }
+        
+        REF_NOTIFICATIONS.child(uid).observeSingleEvent(of: .value) { (snap) in
+            if !snap.exists() {
+                completion(notifications)
+            } else {
+                self.getNotifications(uid: uid, completion: completion)
             }
         }
     }

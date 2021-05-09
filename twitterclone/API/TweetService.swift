@@ -44,6 +44,9 @@ struct TweetService {
         guard let currentUid = Auth.auth().currentUser?.uid else {
             return
         }
+        
+        
+        
         REF_USER_FOLLOWING.child(currentUid).observe(.childAdded) { (snapshot) in
             let followingUid = snapshot.key
             
